@@ -77,8 +77,6 @@ public class AdministratorController {
 		if (result.hasErrors()) {
 			return toInsert();
 		}
-		System.out.println(form.getConfirmPassword());
-		System.out.println(form.getPassword());
 		if(!form.getPassword().equals(form.getConfirmPassword())) {
 			return toInsert();
 		}
@@ -87,7 +85,12 @@ public class AdministratorController {
 			Administrator administrator = new Administrator();
 			// フォームからドメインにプロパティ値をコピー
 			BeanUtils.copyProperties(form, administrator);
-			administratorService.insert(administrator);
+			if(administratorService.findByMailAddress(form.getMailAddress()).equals(null)) {				
+				administratorService.insert(administrator);
+			}else {
+				session.setAttribute("registerdMail", administratorService.findByMailAddress(form.getMailAddress()).getMailAddress());
+				return toInsert();
+			}
 		}
 		session.removeAttribute("token");
 		return "redirect:/";
