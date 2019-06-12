@@ -21,6 +21,8 @@ public class InsertAdministratorForm {
 	/** パスワード */
 	@Size(min=1,max=127,message="パスワードは1文字以上127文字以内で記載してください")
 	private String password;
+	/** ワンタイムトークン*/
+	private String token;
 	public String getName() {
 		return name;
 	}

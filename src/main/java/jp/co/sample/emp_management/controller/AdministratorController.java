@@ -1,5 +1,7 @@
 package jp.co.sample.emp_management.controller;
 
+import java.util.UUID;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
@@ -29,7 +31,7 @@ public class AdministratorController {
 
 	@Autowired
 	private AdministratorService administratorService;
-	
+
 	@Autowired
 	private HttpSession session;
 
@@ -42,8 +44,8 @@ public class AdministratorController {
 	public InsertAdministratorForm setUpInsertAdministratorForm() {
 		return new InsertAdministratorForm();
 	}
-	
-	//  (SpringSecurityに任せるためコメントアウトしました)
+
+	// (SpringSecurityに任せるためコメントアウトしました)
 	@ModelAttribute
 	public LoginForm setUpLoginForm() {
 		return new LoginForm();
@@ -59,26 +61,31 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/toInsert")
 	public String toInsert(Model model) {
+		String token = UUID.randomUUID().toString();
+		session.setAttribute("token", token);
 		return "administrator/insert";
 	}
 
 	/**
 	 * 管理者情報を登録します.
 	 * 
-	 * @param form
-	 *            管理者情報用フォーム
+	 * @param form 管理者情報用フォーム
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form,BindingResult result,Model model) {
-		if(result.hasErrors()) {
+	public String insert(String token, @Validated InsertAdministratorForm form, BindingResult result, Model model) {
+		if (result.hasErrors()) {
 			return toInsert(model);
-		}else {
-		Administrator administrator = new Administrator();
-		// フォームからドメインにプロパティ値をコピー
-		BeanUtils.copyProperties(form, administrator);
-		administratorService.insert(administrator);
-		return  "redirect:/";
+		} else {
+			String tokenInSession = (String) session.getAttribute("token");
+			if (tokenInSession.equals(token)) {
+				Administrator administrator = new Administrator();
+				// フォームからドメインにプロパティ値をコピー
+				BeanUtils.copyProperties(form, administrator);
+				administratorService.insert(administrator);
+			}
+			session.removeAttribute("token");				
+			return "redirect:/";
 		}
 	}
 
@@ -98,10 +105,8 @@ public class AdministratorController {
 	/**
 	 * ログインします.
 	 * 
-	 * @param form
-	 *            管理者情報用フォーム
-	 * @param result
-	 *            エラー情報格納用オブッジェクト
+	 * @param form   管理者情報用フォーム
+	 * @param result エラー情報格納用オブッジェクト
 	 * @return ログイン後の従業員一覧画面
 	 */
 	@RequestMapping("/login")
@@ -113,7 +118,7 @@ public class AdministratorController {
 		}
 		return "forward:/employee/showList";
 	}
-	
+
 	/////////////////////////////////////////////////////
 	// ユースケース：ログアウトをする
 	/////////////////////////////////////////////////////
@@ -127,5 +132,5 @@ public class AdministratorController {
 		session.invalidate();
 		return "redirect:/";
 	}
-	
+
 }
