@@ -60,7 +60,7 @@ public class AdministratorController {
 	 * @return 管理者登録画面
 	 */
 	@RequestMapping("/toInsert")
-	public String toInsert(Model model) {
+	public String toInsert() {
 		String token = UUID.randomUUID().toString();
 		session.setAttribute("token", token);
 		return "administrator/insert";
@@ -75,18 +75,18 @@ public class AdministratorController {
 	@RequestMapping("/insert")
 	public String insert(String token, @Validated InsertAdministratorForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
-			return toInsert(model);
-		} else {
-			String tokenInSession = (String) session.getAttribute("token");
-			if (tokenInSession.equals(token)) {
-				Administrator administrator = new Administrator();
-				// フォームからドメインにプロパティ値をコピー
-				BeanUtils.copyProperties(form, administrator);
-				administratorService.insert(administrator);
-			}
-			session.removeAttribute("token");
-			return "redirect:/";
+			return toInsert();
 		}
+		String tokenInSession = (String) session.getAttribute("token");
+		if (tokenInSession.equals(token)) {
+			Administrator administrator = new Administrator();
+			// フォームからドメインにプロパティ値をコピー
+			BeanUtils.copyProperties(form, administrator);
+			administratorService.insert(administrator);
+		}
+		session.removeAttribute("token");
+		return "redirect:/";
+
 	}
 
 	/////////////////////////////////////////////////////
