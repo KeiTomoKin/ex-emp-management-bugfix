@@ -21,8 +21,9 @@ public class InsertAdministratorForm {
 	/** パスワード */
 	@Size(min=1,max=127,message="パスワードは1文字以上127文字以内で記載してください")
 	private String password;
-	/** ワンタイムトークン*/
-	private String token;
+	/** 確認用パスワード */
+	@Size(min=1,max=127,message="パスワードは1文字以上127文字以内で記載してください")
+	private String confirmPassword;
 	public String getName() {
 		return name;
 	}
@@ -40,6 +41,13 @@ public class InsertAdministratorForm {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 	@Override
 	public String toString() {

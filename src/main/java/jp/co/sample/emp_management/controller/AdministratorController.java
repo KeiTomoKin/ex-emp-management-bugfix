@@ -77,6 +77,13 @@ public class AdministratorController {
 		if (result.hasErrors()) {
 			return toInsert();
 		}
+		System.out.println(form.getConfirmPassword());
+		System.out.println(form.getPassword());
+		if(!form.getPassword().equals(form.getConfirmPassword())) {
+			boolean passCheck=true;
+			session.setAttribute("passCheck", passCheck);
+			return toInsert();
+		}
 		String tokenInSession = (String) session.getAttribute("token");
 		if (tokenInSession.equals(token)) {
 			Administrator administrator = new Administrator();
