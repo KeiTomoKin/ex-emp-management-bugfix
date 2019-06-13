@@ -92,14 +92,16 @@ public class EmployeeController {
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
 	}
-	
-	/**
-	 * 従業員一覧にもどる. (SpringSecurityに任せるためコメントアウトしました)
-	 * 
-	 * @return 従業員一覧画面へリダイレクト
-	 */
-	@RequestMapping("/backShowList")
-	public String logout() {
-		return "redirect:/employee/showList";
+
+	@RequestMapping("/searchByName")
+	public String searchByName(Model model,String name) {
+		System.out.println(name);
+		List<Employee> employeeList = employeeService.ambiguousSearchByName(name);
+		model.addAttribute("employeeList", employeeList);
+		for(Employee employee:employeeList) {
+			System.out.println(employee);
+		}
+		System.out.println("終わり");
+		return "employee/list";
 	}
 }

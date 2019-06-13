@@ -52,4 +52,15 @@ public class EmployeeService {
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
 	}
+	
+	/**
+	 * 曖昧検索した従業員情報を取得します.
+	 * 
+	 * @param name 従業員情報一覧
+	 * @return 
+	 */
+	public List<Employee> ambiguousSearchByName(String name) {
+		List<Employee> employeeList =employeeRepository.ambiguousSearchByName(name);
+		return employeeList;
+	}
 }
