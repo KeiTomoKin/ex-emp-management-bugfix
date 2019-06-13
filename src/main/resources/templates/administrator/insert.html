@@ -59,7 +59,7 @@
 										<label th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}" class="error-messages">
 											メールアドレスを入力してください
 										</label>
-										<label th:if="${session.registerdMail!=null}" class="error-messages">
+										<label th:if="${session.maleCheck}" class="error-messages">
 											登録済みのメールアドレスです
 										</label>
 										<input type="text" name="mailAddress" id="mailAddress" class="form-control" placeholder="yamada@mail.com"
@@ -94,7 +94,7 @@
 											確認用パスワードがことなります。
 
 										</label>
-										<input type="confirmPassword" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="confirmPassword"
+										<input type="Password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="confirmPassword"
 											 th:field="*{confirmPassword}" th:errorclass="error-input" value="">
 									</div>
 								</div>

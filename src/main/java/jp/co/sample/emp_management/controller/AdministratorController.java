@@ -63,6 +63,12 @@ public class AdministratorController {
 	public String toInsert() {
 		String token = UUID.randomUUID().toString();
 		session.setAttribute("token", token);
+		if(session.getAttribute("registerdMail")==null) {
+			session.setAttribute("maleCheck", false);
+		}else {
+			session.setAttribute("maleCheck", true);
+		}
+		session.removeAttribute("registerdMail");
 		return "administrator/insert";
 	}
 
