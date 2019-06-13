@@ -59,7 +59,7 @@
 										<label th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}" class="error-messages">
 											メールアドレスを入力してください
 										</label>
-										<label th:if="${session.maleCheck}" class="error-messages">
+										<label th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{}" class="error-messages">
 											登録済みのメールアドレスです
 										</label>
 										<input type="text" name="mailAddress" id="mailAddress" class="form-control" placeholder="yamada@mail.com"
@@ -90,9 +90,8 @@
 											確認用パスワード:
 										</label>
 										
-										<label th:unless="${insertAdministratorForm.confirmPassword==insertAdministratorForm.password}" class="error-messages">
-											確認用パスワードがことなります。
-
+										<label th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="error-messages">
+											パスワードと確認用パスワードが一致しません。	
 										</label>
 										<input type="Password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="confirmPassword"
 											 th:field="*{confirmPassword}" th:errorclass="error-input" value="">

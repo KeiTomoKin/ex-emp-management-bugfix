@@ -63,12 +63,6 @@ public class AdministratorController {
 	public String toInsert() {
 		String token = UUID.randomUUID().toString();
 		session.setAttribute("token", token);
-		if(session.getAttribute("registerdMail")==null) {
-			session.setAttribute("maleCheck", false);
-		}else {
-			session.setAttribute("maleCheck", true);
-		}
-		session.removeAttribute("registerdMail");
 		return "administrator/insert";
 	}
 
@@ -83,7 +77,8 @@ public class AdministratorController {
 		if (result.hasErrors()) {
 			return toInsert();
 		}
-		if(!form.getPassword().equals(form.getConfirmPassword())) {
+		if (!form.getPassword().equals(form.getConfirmPassword())) {
+			result.rejectValue("confirmPassword", null, "確認用パスワードが異なります");
 			return toInsert();
 		}
 		String tokenInSession = (String) session.getAttribute("token");
@@ -91,12 +86,7 @@ public class AdministratorController {
 			Administrator administrator = new Administrator();
 			// フォームからドメインにプロパティ値をコピー
 			BeanUtils.copyProperties(form, administrator);
-			if(administratorService.findByMailAddress(form.getMailAddress()).equals(null)) {				
-				administratorService.insert(administrator);
-			}else {
-				session.setAttribute("registerdMail", administratorService.findByMailAddress(form.getMailAddress()).getMailAddress());
-				return toInsert();
-			}
+			administratorService.insert(administrator);
 		}
 		session.removeAttribute("token");
 		return "redirect:/";
