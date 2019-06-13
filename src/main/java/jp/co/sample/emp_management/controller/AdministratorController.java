@@ -74,11 +74,13 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/insert")
 	public String insert(String token, @Validated InsertAdministratorForm form, BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			return toInsert();
+		if(administratorService.findByMailAddress(form.getMailAddress())!=null) {
+			result.rejectValue("mailAddress", null, "登録済みのメールアドレスです");
 		}
 		if (!form.getPassword().equals(form.getConfirmPassword())) {
-			result.rejectValue("confirmPassword", null, "確認用パスワードが異なります");
+			result.rejectValue("confirmPassword", null, "パスワードと確認用パスワードが一致しません");
+		}
+		if (result.hasErrors()) {
 			return toInsert();
 		}
 		String tokenInSession = (String) session.getAttribute("token");
@@ -120,6 +122,7 @@ public class AdministratorController {
 			result.addError(new ObjectError("loginError", "メールアドレスまたはパスワードが不正です。"));
 			return toLogin();
 		}
+		session.setAttribute("administratorName", administrator.getName());
 		return "forward:/employee/showList";
 	}
 

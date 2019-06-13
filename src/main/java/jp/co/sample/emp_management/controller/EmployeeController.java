@@ -92,4 +92,14 @@ public class EmployeeController {
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
 	}
+	
+	/**
+	 * 従業員一覧にもどる. (SpringSecurityに任せるためコメントアウトしました)
+	 * 
+	 * @return 従業員一覧画面へリダイレクト
+	 */
+	@RequestMapping("/backShowList")
+	public String logout() {
+		return "redirect:/employee/showList";
+	}
 }
