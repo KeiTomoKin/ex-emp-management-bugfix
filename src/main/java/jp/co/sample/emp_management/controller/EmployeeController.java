@@ -95,13 +95,13 @@ public class EmployeeController {
 
 	@RequestMapping("/searchByName")
 	public String searchByName(Model model,String name) {
-		System.out.println(name);
-		List<Employee> employeeList = employeeService.ambiguousSearchByName(name);
-		model.addAttribute("employeeList", employeeList);
-		for(Employee employee:employeeList) {
-			System.out.println(employee);
+		List<Employee> employeeList = employeeService.findByAmbiguousName(name);
+		if(employeeList.size()==0) {
+			model.addAttribute("noResult",true);
+			model.addAttribute("name",name);
+			return showList(model);
 		}
-		System.out.println("終わり");
+		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}
 }

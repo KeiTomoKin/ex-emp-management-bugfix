@@ -80,16 +80,12 @@ public class EmployeeRepository {
 	 * @return 検索された従業員情報
 	 * @exception 従業員が存在しない場合は例外を発生します
 	 */
-	public List<Employee> ambiguousSearchByName(String name) {
+	public List<Employee> findByAmbiguousName(String name) {
 		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count "
 				+ "FROM employees WHERE name LIKE :name";
-		System.out.println(name);
 		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%"+name+"%");
 		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
-		for(Employee employee:employeeList) {
-			System.out.println(employee);
-		}
-		System.out.println("終わり");
+		
 		return employeeList;
 	}
 

@@ -59,8 +59,8 @@ public class EmployeeService {
 	 * @param name 従業員情報一覧
 	 * @return 
 	 */
-	public List<Employee> ambiguousSearchByName(String name) {
-		List<Employee> employeeList =employeeRepository.ambiguousSearchByName(name);
+	public List<Employee> findByAmbiguousName(String name) {
+		List<Employee> employeeList =employeeRepository.findByAmbiguousName(name);
 		return employeeList;
 	}
 }

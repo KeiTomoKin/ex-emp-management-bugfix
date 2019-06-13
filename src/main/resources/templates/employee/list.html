@@ -68,6 +68,8 @@
 				  <input type="text" name="name" id="name">
 				  <input type="submit" value="検索">
 				</form>
+				
+				<div th:if=${noResult}>「<span th:text="${name}"></span>」を含む検索結果が見つかりませんでした</div>
 
 				<table class="table table-striped">
 					<thead>
