@@ -6,6 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>従業員管理システム</title>
+<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 <link rel="stylesheet" href="../../static/css/bootstrap.css"
 	th:href="@{/css/bootstrap.css}">
 <link rel="stylesheet" href="../../static/css/style.css"
@@ -161,11 +162,11 @@
 								</tr>
 								<tr>
 									<th nowrap>郵便番号</th>
-									<td><input type="text" name="zip_code" th:field="*{zipCode}"class="form-control"></td>
+									<td><input type="text" name="zip_code" th:field="*{zipCode}"class="form-control"onKeyUp="AjaxZip3.zip2addr(this,'','address','address');"></td>
 								</tr>
 								<tr>
 									<th nowrap>住所</th>
-									<td><input type="text" name="address" th:field="*{address}" class="form-control">
+									<td><input type="text" name="address" th:field="*{address}" class="form-control" >
 									</td>
 								</tr>
 								<tr>
