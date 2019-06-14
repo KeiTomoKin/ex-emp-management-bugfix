@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,7 +62,12 @@ public class EmployeeController {
 	@RequestMapping("/showList")
 	public String showList(Model model) {
 		List<Employee> employeeList = employeeService.showList();
+		List<String> nameList = new ArrayList<String>();
+		for(Employee employee:employeeList) {
+			nameList.add("\""+employee.getName()+"\"");
+		}
 		model.addAttribute("employeeList", employeeList);
+		model.addAttribute("nameList", nameList);
 		return "employee/list";
 	}
 
@@ -112,6 +118,12 @@ public class EmployeeController {
 			return showList(model);
 		}
 		model.addAttribute("employeeList", employeeList);
+		employeeList = employeeService.showList();
+		List<String> nameList = new ArrayList<String>();
+		for(Employee employee:employeeList) {
+			nameList.add("\""+employee.getName()+"\"");
+		}
+		model.addAttribute("nameList", nameList);
 		return "employee/list";
 	}
 
