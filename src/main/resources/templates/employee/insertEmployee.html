@@ -45,7 +45,7 @@
 					<p class="navbar-text navbar-right">
 						<span th:text="${session.administratorName}">山田太郎</span>さんこんにちは！
 						&nbsp;&nbsp;&nbsp; <a href="../administrator/login.html"
-							class="navbar-link" th:href="@{/logout}">従業員登録</a>
+							class="navbar-link" th:href="@{/employee/register}">従業員登録</a>
 						&nbsp;&nbsp;&nbsp; <a href="../administrator/login.html"
 							class="navbar-link" th:href="@{/logout}">ログアウト</a>
 					</p>
@@ -67,26 +67,26 @@
 				class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12">
 				<!-- 背景をグレーに、埋め込んだようなコンポーネント -->
 				<div class="well">
-					<form th:action="@{/employee/insert}" method="post">
+					<form th:action="@{/employee/insert}" method="post" th:object="${insertEmployeeForm}" enctype="multipart/form-data">
 						<fieldset>
 							<legend>従業員情報</legend>
 							<table class="table table-striped">
 								<tr>
 									<th nowrap>従業員名</th>
-									<td><input type=text name="name" class="form-control"></td>
+									<td><input type=text name="name" th:field="*{name}" class="form-control"></td>
 								</tr>
 								<tr>
 									<th nowrap>写真</th>
-									<td><input type="file" name="upload_file"></td>
+									<td><input type="file" name="image" th:field="*{image}"></td>
 								</tr>
 								<tr>
 									<th nowrap>性別</th>
-									<td><input type="radio" name="gender" value="男性">男性
-										<input type="radio" name="gender" value="女性">女性</td>
+									<td><input type="radio" name="gender" th:field="*{gender}" value="男性">男性
+										<input type="radio" name="gender" th:field="*{gender}" value="女性">女性</td>
 								</tr>
 								<tr>
 									<th nowrap>入社日</th>
-									<td><select 　id="year" name="year">
+									<td><select 　id="year" name="year" th:field="*{year}">
 											<option value="">----</option>
 											<option value="1990">1990</option>
 											<option value="1991">1991</option>
@@ -101,7 +101,7 @@
 											<option value="2000">2000</option>
 									</select> 
 									<label for="year">年</label> 
-									<select id="month" name="month">
+									<select id="month" name="month" th:field="*{month}">
 											<option value="">--</option>
 											<option value="1">01</option>
 											<option value="2">02</option>
@@ -117,7 +117,7 @@
 											<option value="12">12</option>
 									</select> 
 									<label for="month">月</label> 
-									<select id="day" name="day" >
+									<select id="day" name="day" th:field="*{day}">
 											<option value="">--</option>
 											<option value="1">01</option>
 											<option value="2">02</option>
@@ -156,38 +156,38 @@
 								</tr>
 								<tr>
 									<th nowrap>メールアドレス</th>
-									<td><input type="text" name="mail_address"class="form-control">
+									<td><input type="text" name="mail_address" th:field="*{mailAddress}" class="form-control">
 									</td>
 								</tr>
 								<tr>
 									<th nowrap>郵便番号</th>
-									<td><input type="text" name="zip_code"class="form-control"></td>
+									<td><input type="text" name="zip_code" th:field="*{zipCode}"class="form-control"></td>
 								</tr>
 								<tr>
 									<th nowrap>住所</th>
-									<td><input type="text" name="address"class="form-control">
+									<td><input type="text" name="address" th:field="*{address}" class="form-control">
 									</td>
 								</tr>
 								<tr>
 									<th nowrap>電話番号</th>
-									<td><input type="text" name="telephone" class="form-control">
+									<td><input type="text" name="telephone" th:field="*{telephone}" class="form-control">
 									</td>
 								</tr>
 								<tr>
 									<th nowrap>給料</th>
 									<td>
-									<input type="text" name="salary" class="form-control">
+									<input type="text" name="salary" th:field="*{salary}" class="form-control">
 									</td>
 								</tr>
 								<tr>
 									<th nowrap>特性</th>
 									<td>
-									<textarea name="characteristics" class="form-control"></textarea>
+									<textarea name="characteristics" th:field="*{characteristics}" class="form-control"></textarea>
 									</td>
 								</tr>
 								<tr>
 									<th nowrap>扶養人数</th>
-									<td>  <input type="text" name="dependents_count" class="form-control"></td>
+									<td>  <input type="text" name="dependents_count" th:field="*{dependentsCount}" class="form-control"></td>
 								</tr>
 							</table>
 							<button type="submit" class="btn btn-primary">追加</button>

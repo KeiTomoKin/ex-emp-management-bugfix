@@ -63,4 +63,13 @@ public class EmployeeService {
 		List<Employee> employeeList =employeeRepository.findByAmbiguousName(name);
 		return employeeList;
 	}
+	
+	/**
+	 * 従業員所法を追加します.
+	 * 
+	 * @param employee
+	 */
+	public void insert(Employee employee) {
+		employeeRepository.insert(employee);
+	}
 }

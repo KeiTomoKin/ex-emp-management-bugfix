@@ -1,16 +1,13 @@
 package jp.co.sample.emp_management.controller;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import jp.co.sample.emp_management.domain.Employee;
 import jp.co.sample.emp_management.form.InsertEmployeeForm;
@@ -49,6 +44,11 @@ public class EmployeeController {
 		return new UpdateEmployeeForm();
 	}
 
+	@ModelAttribute
+	public InsertEmployeeForm setUpInsertForm() {
+		return new InsertEmployeeForm();
+	}
+	
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員一覧を表示する
 	/////////////////////////////////////////////////////
@@ -115,34 +115,33 @@ public class EmployeeController {
 		return "employee/list";
 	}
 
+	@RequestMapping("/register")
+	public String register() {
+		return "employee/insertEmployee";
+	}
+	
 	@RequestMapping("/insert")
 	public String insert(InsertEmployeeForm insertEmployeeForm, Model model)
-			throws IllegalStateException, IOException {
-		Path path = Paths.get("/img");
-		if (!Files.exists(path)) {
-			try {
-				Files.createDirectory(path);
-			} catch (NoSuchFileException ex) {
-				System.err.println(ex);
-			} catch (IOException ex) {
-				System.err.println(ex);
-			}
-		}
-
-		int dot = insertEmployeeForm.getImage().getOriginalFilename().lastIndexOf(".");
-		String extention = "";
-		if (dot > 0) {
-			extention = insertEmployeeForm.getImage().getOriginalFilename().substring(dot).toLowerCase();
-		}
-		String filename = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(LocalDateTime.now());
-		Path uploadfile = Paths.get("/Users/demo-kusa/image/" + filename + extention);
-
-		try (OutputStream os = Files.newOutputStream(uploadfile, StandardOpenOption.CREATE)) {
+			throws IllegalStateException, IOException, ParseException {
+		System.out.println(insertEmployeeForm);
+		String uploadfile ="src/main/resources/static/img/" + insertEmployeeForm.getImage().getOriginalFilename();
+		try (FileOutputStream os = new FileOutputStream(uploadfile)) {
 			byte[] bytes = insertEmployeeForm.getImage().getBytes();
 			os.write(bytes);
 		} catch (IOException ex) {
 			System.err.println(ex);
 		}
-		return "employee/list";
+		Employee employee =new Employee();
+		BeanUtils.copyProperties(insertEmployeeForm, employee);
+		String inpDateStr = insertEmployeeForm.getYear()+"/"+insertEmployeeForm.getMonth()+"/"+insertEmployeeForm.getDay();
+
+		SimpleDateFormat sdformat = new SimpleDateFormat("yyyy/MM/dd");
+
+		Date dateTime = sdformat.parse(inpDateStr);
+		employee.setImage(insertEmployeeForm.getImage().getOriginalFilename());
+		employee.setHireDate(dateTime);
+		System.out.println(employee);
+		employeeService.insert(employee);
+		return "redirect:/employee/showList";
 	}
 }

@@ -24,11 +24,11 @@ public class InsertEmployeeForm {
 	/** 電話番号 */
 	private String telephone;
 	/** 給料 */
-	private String salary;
+	private Integer salary;
 	/** 特性 */
 	private String characteristics;
 	/** 扶養家族 */
-	private String dependentsCount;
+	private Integer dependentsCount;
 	public String getName() {
 		return name;
 	}
@@ -89,10 +89,10 @@ public class InsertEmployeeForm {
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-	public String getSalary() {
+	public Integer getSalary() {
 		return salary;
 	}
-	public void setSalary(String salary) {
+	public void setSalary(Integer salary) {
 		this.salary = salary;
 	}
 	public String getCharacteristics() {
@@ -101,10 +101,10 @@ public class InsertEmployeeForm {
 	public void setCharacteristics(String characteristics) {
 		this.characteristics = characteristics;
 	}
-	public String getDependentsCount() {
+	public Integer getDependentsCount() {
 		return dependentsCount;
 	}
-	public void setDependentsCount(String dependentsCount) {
+	public void setDependentsCount(Integer dependentsCount) {
 		this.dependentsCount = dependentsCount;
 	}
 	@Override
